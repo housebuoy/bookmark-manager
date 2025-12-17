@@ -29,6 +29,7 @@ export function middleware(req: NextRequest) {
 // Apply to ALL ROUTES
 export const config = {
   matcher: [
-    "/((?!_next|static|.*\\.(png|jpg|jpeg|gif|svg|ico|webp)).*)",
+    "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };
+

@@ -118,7 +118,7 @@ export default function SignIn() {
           </Button>
 
           {/* Passkey Sign In */}
-          <Button
+          {/* <Button
             variant="secondary"
             disabled={loading}
             className="gap-2"
@@ -135,7 +135,7 @@ export default function SignIn() {
           >
             <Key size={16} />
             Sign in with Passkey
-          </Button>
+          </Button> */}
 
           {/* Google Sign In */}
           <Button

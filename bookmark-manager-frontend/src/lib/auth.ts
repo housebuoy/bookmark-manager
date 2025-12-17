@@ -2,7 +2,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
-import { passkey } from "better-auth/plugins/passkey";
+// import { passkey } from "better-auth/plugins/passkey";
 import { nextCookies } from "better-auth/next-js";
 import { sendEmail } from "@/lib/brevo"; // Brevo email sending function
 
@@ -55,6 +55,6 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
   },
-  plugins: [nextCookies(), passkey()],
+  plugins: [nextCookies()],
   debug: true,
 });
