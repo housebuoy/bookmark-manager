@@ -1,0 +1,38 @@
+# src/main/resources/application.yml
+
+spring:
+  application:
+    name: bookmark-manager
+
+  # --- Datasource Configuration (Production-Ready) ---
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    # Add Hikari connection pool configuration for performance
+    hikari:
+      maximum-pool-size: 15
+      connection-timeout: 5000
+      idle-timeout: 30000
+
+  # --- JPA/Hibernate Configuration (Schema Management DEACTIVATED) ---
+  jpa:
+    hibernate:
+      # Crucial: Use 'none' or 'validate' in production. Flyway handles the schema.
+      ddl-auto: validate
+    # Change to 'false' for production to avoid verbose logging and potential security risks
+    show-sql: true # Keep 'true' for local development debugging
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        globally_quoted_identifiers: true
+#        default_schema: app
+        naming:
+#          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+  # --- Flyway Configuration (CORRECT LOCATION) ---
+  flyway:
+    enabled: false
+#    baseline-on-migrate: true

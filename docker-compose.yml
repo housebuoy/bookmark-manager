@@ -1,0 +1,68 @@
+services:
+  # CONSOLIDATED DATABASE
+  db:
+    image: postgres:16-alpine
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bookmark_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d bookmark_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # SPRING BOOT BACKEND
+  api:
+    build:
+      context: ./bookmark-manager-backend/bookmark-manager
+      dockerfile: Dockerfile
+    container_name: spring_api
+    depends_on:
+      db:
+        condition: service_healthy 
+    environment:
+      # Updated to point to the shared 'db' service and 'bookmark_db'
+      DATABASE_URL: jdbc:postgresql://db:5432/bookmark_db 
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  # NEXT.JS FRONTEND
+  web:
+    build:
+      context: ./bookmark-manager-frontend/
+      dockerfile: Dockerfile
+      args:
+        BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+        # Build-time URL updated
+        DATABASE_URL: postgresql://postgres:postgres@db:5432/bookmark_db
+    container_name: nextjs_web
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_started
+    ports:
+      - "3000:3000"
+    environment:
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      # Runtime URL updated
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/bookmark_db
+      NEXT_PUBLIC_API_URL: http://api:8080
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
