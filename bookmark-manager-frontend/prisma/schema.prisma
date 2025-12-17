@@ -1,7 +1,7 @@
 generator client {
   provider      = "prisma-client"
+  output        = "./generated/prisma"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
-  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -37,7 +37,6 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("session")
-  
 }
 
 model Account {
@@ -57,7 +56,6 @@ model Account {
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
-  
 }
 
 model Verification {
@@ -69,7 +67,6 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
-  
 }
 
 model Bookmark {
@@ -88,7 +85,6 @@ model Bookmark {
   bookmark_tags Bookmark_tags[]
 
   @@map("bookmark")
-  
 }
 
 model Bookmark_tags {
@@ -99,7 +95,6 @@ model Bookmark_tags {
 
   @@id([bookmark_id, tag_id])
   @@map("bookmark_tags")
-  
 }
 
 model Tag {
@@ -111,7 +106,6 @@ model Tag {
 
   @@unique([name, userId])
   @@map("tag")
-  
 }
 
 model Passkey {
@@ -129,5 +123,4 @@ model Passkey {
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("passkey")
-  
 }

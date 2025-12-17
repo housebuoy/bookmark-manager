@@ -19,7 +19,7 @@ export function useTags() {
         throw new Error("User not authenticated to fetch tags.");
       }
       
-      const { data } = await axios.get("http://localhost:8080/api/tags", {
+      const { data } = await axios.get("https://bookmark-manager-d117.onrender.com/api/tags", {
         headers: {
           "X-User-Id": userId,
         },

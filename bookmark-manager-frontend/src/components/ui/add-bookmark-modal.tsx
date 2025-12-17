@@ -27,6 +27,7 @@ export function AddBookmarkModal({ showText = true }: AddBookmarkButtonProps) {
   const addBookmark = useBookmarkStore((state) => state.addBookmark);
   const [open, setOpen] = useState(false);
   const [isScraping, setIsScraping] = useState(false); // Loading state
+  const [isSaving, setIsSaving] = useState(false);
   const [form, setForm] = useState({
     title: "",
     url: "",
@@ -69,7 +70,7 @@ export function AddBookmarkModal({ showText = true }: AddBookmarkButtonProps) {
       }
 
       const response = await fetch(
-        "http://localhost:8080/api/scraper/preview",
+        "https://bookmark-manager-d117.onrender.com/api/scraper/preview",
         {
           method: "POST",
           headers: {
@@ -103,41 +104,45 @@ export function AddBookmarkModal({ showText = true }: AddBookmarkButtonProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const session = await authClient.getSession();
-    const userId = session.data?.user?.id;
 
-    if (!userId) {
-      toast.error("User ID not found. Please log in again.");
-      return;
-    }
-
-    const payload = {
-      title: form.title,
-      url: form.url,
-      description: form.description,
-      favicon: `https://www.google.com/s2/favicons?sz=64&domain_url=${form.url}`,
-      isPinned: false,
-      isArchived: false,
-      viewCount: 0,
-      tags: form.tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
-    };
+    setIsSaving(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/bookmarks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-User-Id": userId,
-        },
-        body: JSON.stringify(payload),
-      });
+      const session = await authClient.getSession();
+      const userId = session.data?.user?.id;
+
+      if (!userId) {
+        toast.error("User ID not found. Please log in again.");
+        return;
+      }
+
+      const payload = {
+        title: form.title,
+        url: form.url,
+        description: form.description,
+        favicon: `https://www.google.com/s2/favicons?sz=64&domain_url=${form.url}`,
+        isPinned: false,
+        isArchived: false,
+        viewCount: 0,
+        tags: form.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+      };
+
+      const response = await fetch(
+        "https://bookmark-manager-d117.onrender.com/api/bookmarks",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-User-Id": userId,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Failed to save bookmark", errorText);
         toast.error("Failed to save bookmark.");
         return;
       }
@@ -156,6 +161,8 @@ export function AddBookmarkModal({ showText = true }: AddBookmarkButtonProps) {
     } catch (err) {
       console.error("Error saving bookmark:", err);
       toast.error("An unexpected error occurred.");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -197,12 +204,13 @@ export function AddBookmarkModal({ showText = true }: AddBookmarkButtonProps) {
                 onChange={handleChange}
                 placeholder="https://example.com"
                 required
+                disabled={isSaving}
               />
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleAutoFill}
-                disabled={isScraping || !form.url}
+                disabled={isScraping || !form.url || isSaving}
                 title="Auto-fill details from URL"
               >
                 {isScraping ? (
@@ -219,6 +227,7 @@ export function AddBookmarkModal({ showText = true }: AddBookmarkButtonProps) {
             <Input
               id="title"
               name="title"
+              disabled={isSaving}
               value={form.title}
               onChange={handleChange}
               placeholder="Website Title"
@@ -231,6 +240,7 @@ export function AddBookmarkModal({ showText = true }: AddBookmarkButtonProps) {
             <Textarea
               id="description"
               name="description"
+              disabled={isSaving}
               value={form.description}
               onChange={(e) => {
                 if (e.target.value.length <= 200) {
@@ -258,8 +268,15 @@ export function AddBookmarkModal({ showText = true }: AddBookmarkButtonProps) {
             />
           </div>
 
-          <Button type="submit" className="w-full">
-            Save Bookmark
+          <Button type="submit" className="w-full" disabled={isSaving}>
+            {isSaving ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Saving...
+              </span>
+            ) : (
+              "Save Bookmark"
+            )}
           </Button>
         </form>
       </DialogContent>

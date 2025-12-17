@@ -9,8 +9,8 @@ export function useBookmarks(selectedTags: string[]) {
     queryFn: async () => {
       const url =
         selectedTags.length > 0
-          ? `http://localhost:8080/api/bookmarks/by-tag?tag=${selectedTags.join(",")}`
-          : "http://localhost:8080/api/bookmarks";
+          ? `https://bookmark-manager-d117.onrender.com/api/bookmarks/by-tag?tag=${selectedTags.join(",")}`
+          : "https://bookmark-manager-d117.onrender.com/api/bookmarks";
 
       const { data } = await axios.get(url);
       return data;

@@ -122,7 +122,7 @@ export const useBookmarkStore = create<BookmarkStore>((set, get) => ({
   deleteBookmark: async (id: string) => {
     try {
       const headers = await getAuthHeaders();
-      await axios.delete(`http://localhost:8080/api/bookmarks/${id}`, {
+      await axios.delete(`https://bookmark-manager-d117.onrender.com/api/bookmarks/${id}`, {
         headers,
       });
       
@@ -153,7 +153,7 @@ export const useBookmarkStore = create<BookmarkStore>((set, get) => ({
       const headers = await getAuthHeaders();
       // NOTE: Empty body {} is required for axios.patch to recognize the 3rd arg as config
       const { data: updated } = await axios.patch(
-        `http://localhost:8080/api/bookmarks/${id}/pin`,
+        `https://bookmark-manager-d117.onrender.com/api/bookmarks/${id}/pin`,
         {}, 
         { headers }
       );
@@ -184,7 +184,7 @@ export const useBookmarkStore = create<BookmarkStore>((set, get) => ({
     try {
       const headers = await getAuthHeaders();
       const { data: updated } = await axios.patch<Bookmark>(
-        `http://localhost:8080/api/bookmarks/${id}/view`,
+        `https://bookmark-manager-d117.onrender.com/api/bookmarks/${id}/view`,
         {},
         { headers }
       );
@@ -250,7 +250,7 @@ export const useBookmarkStore = create<BookmarkStore>((set, get) => ({
     try {
       const headers = await getAuthHeaders();
       const { data: updated } = await axios.patch<Bookmark>(
-        `http://localhost:8080/api/bookmarks/${id}/archive`,
+        `https://bookmark-manager-d117.onrender.com/api/bookmarks${id}/archive`,
         {},
         { headers }
       );
@@ -305,7 +305,7 @@ export const useBookmarkStore = create<BookmarkStore>((set, get) => ({
       const headers = await getAuthHeaders();
       
       const { data } = await axios.get<Bookmark[]>(
-        "http://localhost:8080/api/bookmarks",
+        "https://bookmark-manager-d117.onrender.com/api/bookmarks",
         {
           headers,
         }
@@ -329,7 +329,7 @@ export const useBookmarkStore = create<BookmarkStore>((set, get) => ({
     try {
       const headers = await getAuthHeaders();
       const { data } = await axios.get<Bookmark[]>(
-        "http://localhost:8080/api/bookmarks/pinned",
+        "https://bookmark-manager-d117.onrender.com//api/bookmarks/pinned",
         { headers }
       );
       set({ pinnedBookmarks: data });
