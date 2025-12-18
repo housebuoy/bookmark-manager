@@ -1,4 +1,10 @@
 import SignUp from "@/components/ui/sign-up-form";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sign Up",
+  description: "Create a new Bookmark Manager account.",
+};
 
 export default function SignUpPage() {
   return (

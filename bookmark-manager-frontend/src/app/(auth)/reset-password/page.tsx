@@ -1,4 +1,10 @@
 import ResetPasswordPage from "@/components/ui/reset-password-form";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Reset Password",
+  description: "Reset your Bookmark Manager account password.",
+};
 
 export default function ResetPassword() {
   return (

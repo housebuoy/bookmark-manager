@@ -1,4 +1,10 @@
 import SignIn from "@/components/ui/sign-in-form";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sign In",
+  description: "Sign in to your Bookmark Manager account.",
+};
 
 export default function SignInPage() {
   return (

@@ -17,8 +17,45 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bookmark Manager",
-  description: "Manage your bookmarks efficiently",
+  title: {
+    default: "Bookmark Manager – Save & Organize Your Links",
+    template: "%s | Bookmark Manager",
+  },
+  description:
+    "A modern bookmark manager to save, organize, and tag your favorite links securely.",
+  keywords: [
+    "bookmark manager",
+    "save links",
+    "organize bookmarks",
+    "web bookmarks",
+    "link organizer",
+  ],
+  metadataBase: new URL("https://bookmark-manager-xyz.vercel.app"),
+  openGraph: {
+    title: "Bookmark Manager",
+    description: "Save, organize, and access your bookmarks anywhere.",
+    url: "https://bookmark-manager-xyz.vercel.app",
+    siteName: "Bookmark Manager",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Bookmark Manager",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bookmark Manager",
+    description: "Save and organize bookmarks easily.",
+    images: ["/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

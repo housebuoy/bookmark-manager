@@ -1,4 +1,9 @@
 import ForgotPassword from "@/components/ui/forgot-password-form";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Forgot Password",
+  description: "Request a password reset for your Bookmark Manager account.",
+};
 
 export default function ForgotPasswordPage() {
   return (
