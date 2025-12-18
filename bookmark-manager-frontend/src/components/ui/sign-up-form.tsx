@@ -15,6 +15,7 @@ import { Loader2, X } from "lucide-react";
 import { signIn, signUp } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState("");
@@ -147,7 +148,7 @@ export default function SignUp() {
           </div>
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-[#054744] cursor-pointer"
             disabled={loading}
             onClick={async () => {
               await signUp.email({
@@ -182,7 +183,7 @@ export default function SignUp() {
           <Button
             variant="outline"
             disabled={loading}
-            className="gap-2"
+            className="gap-2 cursor-pointer"
             onClick={async () => {
               setLoading(true);
               await signIn.social(
@@ -222,6 +223,12 @@ export default function SignUp() {
             </svg>
             Sign in with Google
           </Button>
+          <div className="flex justify-center items-center gap-2 text-sm">
+            <p>Already have an account?</p>
+            <Link href="/sign-in" className="text-sm underline text-center">
+              Sign in
+            </Link>
+          </div>
         </div>
       </CardContent>
     </Card>
