@@ -55,8 +55,9 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
   },
-  plugins: [nextCookies()],
   debug: true,
   trustedOrigins: ["https://bookmark-manager-xyz.vercel.app",
     "http://localhost:3000",],
+  plugins: [nextCookies()],
+  
 });
