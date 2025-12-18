@@ -57,4 +57,5 @@ export const auth = betterAuth({
   },
   plugins: [nextCookies()],
   debug: true,
+  trustedOrigins: ["https://bookmark-manager-xyz.vercel.app"],
 });
