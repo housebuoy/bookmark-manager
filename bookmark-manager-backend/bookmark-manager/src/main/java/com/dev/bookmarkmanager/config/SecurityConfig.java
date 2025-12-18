@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .addFilterBefore(new DevUserFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error").permitAll() // Allow error pages
-                        .anyRequest().authenticated()          // Require login for everything else
+                        .anyRequest().authenticated() // Require login for everything else
                 );
 
         return http.build();
@@ -47,7 +47,8 @@ public class SecurityConfig {
     // Custom Filter to read X-User-Id header
     public static class DevUserFilter extends OncePerRequestFilter {
         @Override
-        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                FilterChain filterChain)
                 throws ServletException, IOException {
 
             String userId = request.getHeader("X-User-Id");
@@ -57,8 +58,7 @@ public class SecurityConfig {
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                         userId, // This becomes principal.getName()
                         null,
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
-                );
+                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
 
@@ -69,7 +69,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://bookmark-manager-xyz.vercel.app"));
         // Allow common methods AND the OPTIONS method
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         // Allow our custom header

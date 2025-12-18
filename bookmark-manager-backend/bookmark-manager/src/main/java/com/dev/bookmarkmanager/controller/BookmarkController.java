@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/bookmarks")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://bookmark-manager-xyz.vercel.app"})
 public class BookmarkController {
 
     private final BookmarkService bookmarkService;

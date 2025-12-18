@@ -9,7 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/scraper")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://bookmark-manager-xyz.vercel.app"})
 public class ScraperController {
 
     private final ScraperService scraperService;
