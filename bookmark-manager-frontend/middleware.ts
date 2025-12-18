@@ -6,7 +6,7 @@ export function middleware(req: NextRequest) {
   const url = req.nextUrl.pathname;
 
   // --- PUBLIC ROUTES (NOT PROTECTED) ---
-  const publicRoutes = ["/sign-in", "/sign-up", "/api/auth", "/forgot-password", "/reset-password"];
+  const publicRoutes = ["/sign-in", "/sign-up", "/api/auth", "/forgot-password", "/reset-password", "/google4f843be4fd810044.html"];
 
   // If the current path starts with a public route → allow access
   if (publicRoutes.some(route => url.startsWith(route))) {
