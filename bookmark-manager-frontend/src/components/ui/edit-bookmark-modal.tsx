@@ -62,7 +62,7 @@ export function EditBookmarkModal({ bookmark }: EditBookmarkModalProps) {
     };
 
     try {
-      const res = await fetch(`http://localhost:8080/api/bookmarks/${bookmark.id}`, {
+      const res = await fetch(`https://bookmark-manager-d117.onrender.com/api/bookmarks/${bookmark.id}`, {
         method: "PUT",
         headers: { 
             "Content-Type": "application/json",
