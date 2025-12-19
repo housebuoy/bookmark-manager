@@ -1,13 +1,19 @@
 {
   "manifest_version": 3,
-  "name": "Bookmark Manager Sync",
+  "name": "Bookmark Manager Pro",
   "version": "1.0",
-  "permissions": ["bookmarks", "activeTab", "scripting"],
+  "permissions": ["activeTab", "storage"],
   "action": {
     "default_popup": "popup.html"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "host_permissions": [
-    "http://localhost:8080/*", 
-    "https://bookmark-manager-xyz.vercel.app/*"
-  ]
+    "https://bookmark-manager-xyz.vercel.app/*",
+    "https://bookmark-manager-d117.onrender.com/*"
+  ],
+  "externally_connectable": {
+    "matches": ["https://bookmark-manager-xyz.vercel.app/*"]
+  }
 }

@@ -3,15 +3,26 @@
 <head>
   <style>
     body { width: 300px; padding: 15px; font-family: sans-serif; }
-    input { width: 100%; margin-bottom: 10px; padding: 8px; box-sizing: border-box; }
-    button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
-    .status { margin-top: 10px; font-size: 12px; }
+    .hidden { display: none; }
+    input { width: 100%; margin: 10px 0; padding: 8px; box-sizing: border-box; }
+    button { width: 100%; padding: 10px; cursor: pointer; border: none; border-radius: 4px; }
+    #saveBtn { background: #2563eb; color: white; }
+    #loginBtn { background: #10b981; color: white; }
+    .status { font-size: 12px; margin-top: 10px; }
   </style>
 </head>
 <body>
-  <h3>Save Bookmark</h3>
-  <input type="text" id="userId" placeholder="Enter your User ID" />
-  <button id="saveBtn">Save Current Tab</button>
+  <div id="authView" class="hidden">
+    <p>Please sign in to save bookmarks.</p>
+    <button id="loginBtn">Sign In with Web App</button>
+  </div>
+
+  <div id="saveView" class="hidden">
+    <h3>Save Bookmark</h3>
+    <input type="text" id="titleInput" placeholder="Title">
+    <input type="text" id="tagInput" placeholder="Tags (comma separated)">
+    <button id="saveBtn">Save Bookmark</button>
+  </div>
   <div id="status" class="status"></div>
   <script src="popup.js"></script>
 </body>

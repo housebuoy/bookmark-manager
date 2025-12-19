@@ -6,12 +6,43 @@ import { BookmarkCard } from "@/components/ui/bookmark-card";
 import { useBookmarkStore } from "@/stores/bookmark-store";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SortByDropdown } from "@/components/ui/sort-by-dropdown";
+import { useSession } from "@/lib/auth-client";
+
+declare global {
+  interface Window {
+    chrome: any;
+  }
+}
+
 
 export default function Home() {
   const [isGrid, setIsGrid] = useState(true);
   const [loading, setLoading] = useState(true);
   const ITEMS_PER_PAGE = 12;
   const [currentPage, setCurrentPage] = useState(1);
+  const { data: session } = useSession();
+
+useEffect(() => {
+    // Only run this on the client
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      // Check if redirecting from extension and session is available
+      if (urlParams.get("ext_redirect") === "true" && session?.user?.id) {
+        // Use window.chrome to avoid TS errors
+        if (window.chrome && window.chrome.runtime) {
+          window.chrome.runtime.sendMessage(
+            "klhbiidjmocpbobcglndihbbjdehhkpk",
+            { userId: session.user.id },
+            () => {
+              console.log("Token handed off to extension");
+              window.close(); 
+            }
+          );
+        }
+      }
+    }
+  }, [session]);
 
   const { loadBookmarks, filteredBookmarks, sortBy, setSortBy, refreshKey } =
     useBookmarkStore();

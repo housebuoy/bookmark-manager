@@ -69,7 +69,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://bookmark-manager-xyz.vercel.app"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://bookmark-manager-xyz.vercel.app", "chrome-extension://klhbiidjmocpbobcglndihbbjdehhkpk"));
         // Allow common methods AND the OPTIONS method
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         // Allow our custom header

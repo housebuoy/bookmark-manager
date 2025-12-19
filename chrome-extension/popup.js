@@ -1,57 +1,61 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const saveBtn = document.getElementById('saveBtn');
-  const userIdInput = document.getElementById('userId');
+const API_URL = "https://bookmark-manager-d117.onrender.com/api/bookmarks";
+const WEB_APP_URL = "https://bookmark-manager-xyz.vercel.app";
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const authView = document.getElementById('authView');
+  const saveView = document.getElementById('saveView');
+  const titleInput = document.getElementById('titleInput');
   const status = document.getElementById('status');
 
-  // Load saved User ID from storage
-  chrome.storage.local.get(['savedUserId'], (result) => {
-    if (result.savedUserId) userIdInput.value = result.savedUserId;
+  // Check for saved session/token
+  const { userId } = await chrome.storage.local.get(['userId']);
+
+  if (!userId) {
+    authView.classList.remove('hidden');
+  } else {
+    saveView.classList.remove('hidden');
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    titleInput.value = tab.title;
+  }
+
+  document.getElementById('loginBtn').addEventListener('click', () => {
+    chrome.tabs.create({ url: `${WEB_APP_URL}?ext_redirect=true` });
   });
 
-  saveBtn.addEventListener('click', async () => {
-    const userId = userIdInput.value.trim();
-    if (!userId) {
-      status.innerText = "Error: User ID is required.";
-      return;
-    }
-
-    // Save User ID for future use
-    chrome.storage.local.set({ savedUserId: userId });
-
-    // Get active tab details
+  document.getElementById('saveBtn').addEventListener('click', async () => {
+    const { userId } = await chrome.storage.local.get(['userId']);
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const tags = document.getElementById('tagInput').value.split(',').map(t => t.trim());
 
     const bookmarkRequest = {
-      title: tab.title,
+      title: titleInput.value,
       url: tab.url,
       favicon: tab.favIconUrl || "",
-      description: "Saved via Chrome Extension",
-      tags: ["extension"],
+      description: "Saved via Extension",
+      tags: tags,
       isPinned: false,
       isArchived: false
     };
 
     status.innerText = "Saving...";
-
     try {
-      const response = await fetch('http://localhost:8080/api/bookmarks', {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-User-Id': userId // Required by your DevUserFilter
+          'X-User-Id': userId // Matches your current DevUserFilter
         },
         body: JSON.stringify(bookmarkRequest)
       });
 
       if (response.ok) {
-        status.innerText = "Successfully saved!";
+        status.innerText = "Saved successfully!";
         setTimeout(() => window.close(), 1500);
       } else {
-        status.innerText = "Failed to save bookmark.";
+        status.innerText = "Error saving bookmark.";
       }
-    } catch (error) {
-      status.innerText = "Error: Could not connect to backend.";
-      console.error(error);
+    } catch (e) {
+      status.innerText = "Backend not reachable.";
     }
   });
 });
