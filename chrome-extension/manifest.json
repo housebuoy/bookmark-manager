@@ -4,7 +4,11 @@
   "version": "1.0",
   "permissions": ["activeTab", "storage"],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": "logo.png"
+  },
+  "icons": {
+    "128": "logo.png"
   },
   "background": {
     "service_worker": "background.js"
