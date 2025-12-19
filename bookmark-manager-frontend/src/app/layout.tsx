@@ -30,6 +30,9 @@ export const metadata: Metadata = {
     "web bookmarks",
     "link organizer",
   ],
+  verification: {
+    google: "YGWDQYuUNOVbmAuGEyq0nA86c-4pal3B6CUKSqZKV-Y",
+  },
   metadataBase: new URL("https://bookmark-manager-xyz.vercel.app"),
   openGraph: {
     title: "Bookmark Manager",

@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Bookmark Manager Sync",
+  "version": "1.0",
+  "permissions": ["bookmarks", "activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "host_permissions": [
+    "http://localhost:8080/*", 
+    "https://bookmark-manager-xyz.vercel.app/*"
+  ]
+}
